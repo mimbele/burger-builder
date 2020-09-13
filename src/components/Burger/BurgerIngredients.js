@@ -3,37 +3,28 @@ import styles from './BurgerIngredients.module.css'
 import propTypes from 'prop-types'
 
 const burgerIngredient = (props) => {
-    let ingredient = null;
 
     switch (props.type){
         case ('bread-top'):
-            ingredient = (
+            return (
                 <div className={styles.BreadTop}>
                     <div className={styles.Seeds1}></div>
                     <div className={styles.Seeds2}></div>
                 </div>
             );
-            break;
         case ('bread-bottom'):
-            ingredient = <div className={styles.BreadBottom}></div>;
-            break;
+            return <div className={styles.BreadBottom}></div>;
         case ('meat'):
-                ingredient = <div className={styles.Meat}></div>;
-                break;
+            return <div className={styles.Meat}></div>;
         case ('cheese'):
-                ingredient = <div className={styles.Cheese}></div>;
-                break;
+            return <div className={styles.Cheese}></div>;
         case ('salad'):
-                ingredient = <div className={styles.Salad}></div>;
-                break;
+            return <div className={styles.Salad}></div>;
         case ('bacon'):
-                ingredient = <div className={styles.Bacon}></div>;
-                break;
+            return <div className={styles.Bacon}></div>;
         default:
-            ingredient = null;        
+            return null;        
     }
-
-    return ingredient;
 }
 
 burgerIngredient.propTypes = {
