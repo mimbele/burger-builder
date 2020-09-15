@@ -9,7 +9,7 @@ const burger = (props) => {
     let ingredientsJSX = Object.keys(props.ingredients)
         .map(igKey => {
             return [...Array(props.ingredients[igKey])]
-            .map( (_,i) => <Ingredient type={igKey} key={igKey + 1}/> );
+            .map( (_,i) => <Ingredient type={igKey} key={igKey + i}/> );
         })
         .reduce((newArray, currentElement) => 
             newArray.concat(currentElement), []); //reduce flattens the 2d array

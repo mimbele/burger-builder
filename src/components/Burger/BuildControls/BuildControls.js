@@ -11,9 +11,9 @@ const controls = [
 
 const buildControls = (props) => (
     <div className={styles.BuildControls}>
-        { controls.map( control => (
+        { controls.map( (control,i) => (
             <BuildControl 
-                key={control.label} label={control.label}
+                key={control.label + i} label={control.label}
                 addHandler={() => props.addHandler(control.type)}
                 removeHandler={() => props.removeHandler(control.type)}
                 disableLessButton={props.disableLessButton[control.type]}/>
