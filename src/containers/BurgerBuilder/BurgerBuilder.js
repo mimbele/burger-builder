@@ -10,14 +10,16 @@ const INGREDIENT_PRICES = {
     meat: 1.9
 }
 
+const DEFAULT_BURGER_PRICE = 4;
+
 class BurgerBuilder extends Component {
     state = {
         ingredients: { salad: 0, bacon: 0, cheese:0, meat: 0 },
-        totalPrice: 4
+        totalPrice: DEFAULT_BURGER_PRICE
     }
 
     //click handler for "More" button in Build Control
-    MoreIngredient = (type) => {
+    moreIngredient = (type) => {
         const oldCount = this.state.ingredients[type]
         const updatedIngredients = { ...this.state.ingredients}
         updatedIngredients[type] = oldCount + 1
@@ -27,7 +29,7 @@ class BurgerBuilder extends Component {
     }
 
     //click handler for "Less" button in Build Control
-    LessIngredient = (type) => {
+    lessIngredient = (type) => {
         const oldCount = this.state.ingredients[type]
         if (oldCount <= 0) {
             return;
@@ -44,16 +46,18 @@ class BurgerBuilder extends Component {
         for (let key in disableLessButton) {
             disableLessButton[key] = (disableLessButton[key] <= 0)
         } // disableLessButton = { salad: true, meat: false, ...}
-        
+
+        const disableOrderButton = (this.state.totalPrice === DEFAULT_BURGER_PRICE);
+
         return(
             <Aux>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls 
                     price={this.state.totalPrice}
-                    addHandler={this.MoreIngredient}
-                    removeHandler={this.LessIngredient}
+                    addHandler={this.moreIngredient}
+                    removeHandler={this.lessIngredient}
                     disableLessButton={disableLessButton}
-                    disableOrderButton={this.state.totalPrice <= 4}/>
+                    disableOrderButton={disableOrderButton}/>
             </Aux>
         );
     }
