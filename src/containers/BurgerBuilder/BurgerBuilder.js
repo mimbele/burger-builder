@@ -44,14 +44,16 @@ class BurgerBuilder extends Component {
         for (let key in disableLessButton) {
             disableLessButton[key] = (disableLessButton[key] <= 0)
         } // disableLessButton = { salad: true, meat: false, ...}
-
+        
         return(
             <Aux>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls 
+                    price={this.state.totalPrice}
                     addHandler={this.MoreIngredient}
                     removeHandler={this.LessIngredient}
-                    disableLessButton={disableLessButton}/>
+                    disableLessButton={disableLessButton}
+                    disableOrderButton={this.state.totalPrice <= 4}/>
             </Aux>
         );
     }
