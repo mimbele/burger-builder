@@ -48,6 +48,10 @@ class BurgerBuilder extends Component {
         this.setState({isOrdering: true});
     }
 
+    cancelOrderHandler = () => {
+        this.setState({isOrdering: false});
+    }
+
     render(){
         const disableLessButton = { ...this.state.ingredients}
         for (let key in disableLessButton) {
@@ -67,7 +71,7 @@ class BurgerBuilder extends Component {
                     disableOrderButton={disableOrderButton}
                     orderHandler={this.orderHandler}/>
 
-                <Modal show={this.state.isOrdering}>
+                <Modal show={this.state.isOrdering} cancelOrder={this.cancelOrderHandler}>
                     <OrderSummery ingredients={this.state.ingredients}/>
                 </Modal>
             </Aux>
