@@ -17,7 +17,8 @@ const DEFAULT_BURGER_PRICE = 4;
 class BurgerBuilder extends Component {
     state = {
         ingredients: { salad: 0, bacon: 0, cheese:0, meat: 0 },
-        totalPrice: DEFAULT_BURGER_PRICE
+        totalPrice: DEFAULT_BURGER_PRICE,
+        isOrdering: false //isOrdering bacomes true when Order button is pressed and triggers orderHandler
     }
 
     //click handler for "More" button in Build Control
@@ -43,6 +44,10 @@ class BurgerBuilder extends Component {
             {ingredients: updatedIngredients, totalPrice: updatedPrice} );
     }
 
+    orderHandler = () => {
+        this.setState({isOrdering: true});
+    }
+
     render(){
         const disableLessButton = { ...this.state.ingredients}
         for (let key in disableLessButton) {
@@ -53,16 +58,18 @@ class BurgerBuilder extends Component {
 
         return(
             <Aux>
-                <Modal>
-                    <OrderSummery ingredients={this.state.ingredients}/>
-                </Modal>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls 
                     price={this.state.totalPrice}
                     addHandler={this.moreIngredient}
                     removeHandler={this.lessIngredient}
                     disableLessButton={disableLessButton}
-                    disableOrderButton={disableOrderButton}/>
+                    disableOrderButton={disableOrderButton}
+                    orderHandler={this.orderHandler}/>
+
+                <Modal show={this.state.isOrdering}>
+                    <OrderSummery ingredients={this.state.ingredients}/>
+                </Modal>
             </Aux>
         );
     }
