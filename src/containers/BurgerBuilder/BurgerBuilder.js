@@ -48,8 +48,12 @@ class BurgerBuilder extends Component {
         this.setState({isOrdering: true});
     }
 
-    cancelOrderHandler = () => {
+    cancelOrder = () => {
         this.setState({isOrdering: false});
+    }
+
+    continueOrder = () => {
+        alert('Ordering the burger'); //to be fully implemented in the future
     }
 
     render(){
@@ -71,8 +75,12 @@ class BurgerBuilder extends Component {
                     disableOrderButton={disableOrderButton}
                     orderHandler={this.orderHandler}/>
 
-                <Modal show={this.state.isOrdering} cancelOrder={this.cancelOrderHandler}>
-                    <OrderSummery ingredients={this.state.ingredients}/>
+                <Modal show={this.state.isOrdering} cancelOrder={this.cancelOrder}>
+                    <OrderSummery 
+                        ingredients={this.state.ingredients} 
+                        price={this.state.totalPrice}
+                        cancelOrder={this.cancelOrder}
+                        continueOrder={this.continueOrder}/>
                 </Modal>
             </Aux>
         );
