@@ -19,8 +19,12 @@
     height: 100%;
 }
 
-@media (max-width: 499px){
-    .Foo {
+.Menu {
+    cursor: pointer;
+}
+
+@media (min-width: 500px){
+    .Menu{
         display: none;
     }
 }
