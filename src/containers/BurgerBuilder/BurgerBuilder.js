@@ -23,18 +23,17 @@ class BurgerBuilder extends Component {
         totalPrice: DEFAULT_BURGER_PRICE,
         isOrdering: false, //isOrdering bacomes true when Order button is pressed and triggers orderHandler
         isLoading: false, //isLoading bacomes true while order is being sent to the server and triggers showing the loading Spinner
-        error: false //becomes true when data can't be retrieved from the server at componentDidMount and therefore BurgerBuilder app is essetially broken
+        loadingDataError: false //loadingDataError becomes true when data can't be retrieved from the server at componentDidMount and therefore BurgerBuilder app is essentially broken
     }
 
     componentDidMount () {
-        axios.get( '/ingredients' )
+        axios.get( '/ingredients.json' )
             .then( response => {
                 this.setState( { ingredients: response.data } );
-            } )
+            })
             .catch( error => {
-                this.setState( { error: true } );
-                console.log('i;m here')
-            } );
+                this.setState( { loadingDataError: true } );
+            });
     }
 
 
@@ -102,9 +101,7 @@ class BurgerBuilder extends Component {
         const disableOrderButton = (this.state.totalPrice === DEFAULT_BURGER_PRICE);
 
         let orderSummery = null;
-        let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
-
-        console.log(this.state.error)
+        let burger = this.state.loadingDataError ? <p>Data can't be loaded! :/</p> : <Spinner />;
 
         if (this.state.ingredients) {
             burger = (<Aux>
