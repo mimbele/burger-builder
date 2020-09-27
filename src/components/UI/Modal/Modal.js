@@ -11,7 +11,7 @@ class Modal extends Component {
     render(){
         return (
             <Aux>
-                <Backdrop show={this.props.show} clicked={this.props.cancelOrder}/>
+                <Backdrop show={this.props.show} clicked={this.props.cancelModal}/>
                 <div 
                     className={styles.Modal}
                     style={{

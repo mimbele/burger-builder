@@ -6,6 +6,7 @@ import Modal from '../../components/UI/Modal/Modal'
 import OrderSummery from '../../components/Burger/OrderSummery/OrderSummery'
 import axios from '../../axios'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import withErrorHandler from '../../hoc/withErrorHandler'
 
 const INGREDIENT_PRICES = {
     salad: 0.7,
@@ -107,7 +108,7 @@ class BurgerBuilder extends Component {
                     disableOrderButton={disableOrderButton}
                     orderHandler={this.orderHandler}/>
 
-                <Modal show={this.state.isOrdering} cancelOrder={this.cancelOrder}>
+                <Modal show={this.state.isOrdering} cancelModal={this.cancelOrder}>
                     {orderSummery}
                 </Modal>
             </Aux>
@@ -115,4 +116,4 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
