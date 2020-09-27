@@ -19,11 +19,24 @@ const DEFAULT_BURGER_PRICE = 4;
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: { salad: 0, bacon: 0, cheese:0, meat: 0 },
+        ingredients: null,
         totalPrice: DEFAULT_BURGER_PRICE,
         isOrdering: false, //isOrdering bacomes true when Order button is pressed and triggers orderHandler
-        isLoading: false //isLoading bacomes true while order is being sent to the server and triggers showing the loading Spinner
+        isLoading: false, //isLoading bacomes true while order is being sent to the server and triggers showing the loading Spinner
+        error: false //becomes true when data can't be retrieved from the server at componentDidMount and therefore BurgerBuilder app is essetially broken
     }
+
+    componentDidMount () {
+        axios.get( '/ingredients' )
+            .then( response => {
+                this.setState( { ingredients: response.data } );
+            } )
+            .catch( error => {
+                this.setState( { error: true } );
+                console.log('i;m here')
+            } );
+    }
+
 
     //click handler for "More" button in Build Control
     moreIngredient = (type) => {
@@ -88,25 +101,36 @@ class BurgerBuilder extends Component {
 
         const disableOrderButton = (this.state.totalPrice === DEFAULT_BURGER_PRICE);
 
-        let orderSummery = <OrderSummery 
-            ingredients={this.state.ingredients} 
-            price={this.state.totalPrice}
-            cancelOrder={this.cancelOrder}
-            continueOrder={this.continueOrder}/>;
+        let orderSummery = null;
+        let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
+
+        console.log(this.state.error)
+
+        if (this.state.ingredients) {
+            burger = (<Aux>
+                        <Burger ingredients={this.state.ingredients}/>
+                        <BuildControls 
+                            price={this.state.totalPrice}
+                            addHandler={this.moreIngredient}
+                            removeHandler={this.lessIngredient}
+                            disableLessButton={disableLessButton}
+                            disableOrderButton={disableOrderButton}
+                            orderHandler={this.orderHandler}/>
+                    </Aux>);
+
+            orderSummery = (<OrderSummery 
+                            ingredients={this.state.ingredients} 
+                            price={this.state.totalPrice}
+                            cancelOrder={this.cancelOrder}
+                            continueOrder={this.continueOrder}/>);
+        }
         if (this.state.isLoading) {
             orderSummery = <Spinner />
         }
 
         return(
             <Aux>
-                <Burger ingredients={this.state.ingredients}/>
-                <BuildControls 
-                    price={this.state.totalPrice}
-                    addHandler={this.moreIngredient}
-                    removeHandler={this.lessIngredient}
-                    disableLessButton={disableLessButton}
-                    disableOrderButton={disableOrderButton}
-                    orderHandler={this.orderHandler}/>
+                {burger}
 
                 <Modal show={this.state.isOrdering} cancelModal={this.cancelOrder}>
                     {orderSummery}
