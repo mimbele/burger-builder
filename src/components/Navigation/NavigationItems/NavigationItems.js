@@ -6,10 +6,10 @@ const navigationItems = (props) => {
     return (
         <ul className={classes}>
             <li>
-                <a href='/' className={styles.active}>Burger Builder</a>
+                <a href='/burger-builder' className={styles.active}>Burger Builder</a>
             </li>
             <li>
-                <a href='/'>Checkout</a>
+                <a href='/checkout'>Checkout</a>
             </li>
         </ul>
     );

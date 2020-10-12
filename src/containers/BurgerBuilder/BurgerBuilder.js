@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import axios from '../../axios'
+
 import Aux from '../../hoc/Auxiliary'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummery from '../../components/Burger/OrderSummery/OrderSummery'
-import axios from '../../axios'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler'
 
@@ -69,27 +70,38 @@ class BurgerBuilder extends Component {
     }
 
     continueOrder = () => {
-        this.setState({isLoading: true})
+        const queryParams = [];
+        for (let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        const queryString = queryParams.join('&');
 
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Maryam Naderi',
-                address: 'blah blah blah',
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'}
+        this.props.history.push({
+            pathname: 'checkout',
+            search: '?' + queryString
+        });
+        // this.setState({isLoading: true})
+
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Maryam Naderi',
+        //         address: 'blah blah blah',
+        //         email: 'test@test.com'
+        //     },
+        //     deliveryMethod: 'fastest'}
         
-        axios.post('/orders.json', order)
-            .then(response => {
-                console.log(response)
-                this.setState({isLoading: false, isOrdering:false})
-            })
-            .catch(error => {
-                console.log(error)
-                this.setState({isLoading: false, isOrdering:false})
-            })
+        
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         console.log(response)
+        //         this.setState({isLoading: false, isOrdering:false})
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //         this.setState({isLoading: false, isOrdering:false})
+        //     })
     }
 
     render(){
