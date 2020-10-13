@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
 import styles from './Checkout.module.css'
 import Burger from '../../components/Burger/Burger'
 import Button from '../../components/UI/Button/Button'
+import ContactData from './ContactData/ContactData';
 
 
 class Checkout extends Component {
     state = {
-        ingredients: {salad:1, meat:1, bacon:1, cheese:1}
+        ingredients: {salad:1, meat:1, bacon:1, cheese:1},
+        continued: false
     }
 
     componentDidMount () {
         const query = new URLSearchParams(this.props.location.search);
         const ingredients = {}
         for (let param of query.entries()){
-            //param = ['salad', '1']
+            // now each 'param' is an array in this form: ['salad', '1']
             ingredients[param[0]] = +param[1]
         }
         this.setState({ingredients: ingredients})
@@ -24,6 +27,7 @@ class Checkout extends Component {
     }
 
     checkoutContinued = () => {
+        this.setState({continued: true})
         this.props.history.replace('/checkout/contact-data')
     }
 
@@ -37,8 +41,9 @@ class Checkout extends Component {
                 </div>
                 <strong><p>Total Price: {}$</p></strong>
                 
-                <Button clicked={this.checkoutCancelled} btnType='Danger'>Cancel</Button>
-                <Button clicked={this.checkoutContinued} btnType='Success'>Order</Button>
+                <Button hide={this.state.continued} clicked={this.checkoutCancelled} btnType='Danger'>Cancel</Button>
+                <Button hide={this.state.continued} clicked={this.checkoutContinued} btnType='Success'>Continue</Button>
+                <Route path={this.props.match.path + '/contact-data'} component={ContactData} />
             </div>
         );
     }
