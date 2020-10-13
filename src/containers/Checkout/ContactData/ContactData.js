@@ -3,6 +3,7 @@ import axios from '../../../axios'
 import styles from './ContactData.module.css'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
+import withErrorHandler from '../../../hoc/withErrorHandler'
 
 class ContactData extends Component {
     state = {
@@ -66,4 +67,4 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+export default withErrorHandler(ContactData, axios);
