@@ -8,18 +8,26 @@ import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component {
     state = {
-        ingredients: {salad:1, meat:1, bacon:1, cheese:1},
+        ingredients: null,
+        price: 0,
         continued: false
     }
 
-    componentDidMount () {
+    componentWillMount () {
+        //super();
         const query = new URLSearchParams(this.props.location.search);
         const ingredients = {}
+        let price = 0
         for (let param of query.entries()){
             // now each 'param' is an array in this form: ['salad', '1']
-            ingredients[param[0]] = +param[1]
+            if (param[0] === 'price') {
+                price = +param[1]
+            }
+            else {
+                ingredients[param[0]] = +param[1]
+            }
         }
-        this.setState({ingredients: ingredients})
+        this.setState({ingredients: ingredients, totalPrice: price})
     }
 
     checkoutCancelled = () => {
@@ -39,11 +47,17 @@ class Checkout extends Component {
                 <div style={{width: '100%', margin: 'auto'}}>
                     <Burger ingredients={this.state.ingredients}/>
                 </div>
-                <strong><p>Total Price: {}$</p></strong>
+                <strong><p>Total Price: {this.state.totalPrice}$</p></strong>
                 
                 <Button hide={this.state.continued} clicked={this.checkoutCancelled} btnType='Danger'>Cancel</Button>
                 <Button hide={this.state.continued} clicked={this.checkoutContinued} btnType='Success'>Continue</Button>
-                <Route path={this.props.match.path + '/contact-data'} component={ContactData} />
+                <Route 
+                    path={this.props.match.path + '/contact-data'} 
+                    render={(props) => 
+                        (<ContactData 
+                            ingredients={this.state.ingredients} 
+                            totalPrice={this.state.totalPrice} 
+                            {...props} />)} />
             </div>
         );
     }
