@@ -1,15 +1,19 @@
 import React from 'react'
 import styles from './NavigationItems.module.css'
+import { NavLink } from 'react-router-dom'
 
 const navigationItems = (props) => {
     const classes = [styles.NavigationItems, props.desktopOnly ? styles.DesktopOnly : null ].join(' ');
     return (
         <ul className={classes}>
             <li>
-                <a href='/burger-builder' className={styles.active}>Burger Builder</a>
+                <NavLink 
+                    to='/burger-builder' exact
+                    activeClassName={styles.active} >Burger Builder</NavLink>
             </li>
             <li>
-                <a href='/checkout'>Checkout</a>
+                <NavLink to='/orders' exact
+                activeClassName={styles.active} >Orders</NavLink>
             </li>
         </ul>
     );

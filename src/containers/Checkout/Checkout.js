@@ -47,7 +47,7 @@ class Checkout extends Component {
                 <div style={{width: '100%', margin: 'auto'}}>
                     <Burger ingredients={this.state.ingredients}/>
                 </div>
-                <strong><p>Total Price: {this.state.totalPrice}$</p></strong>
+                <strong><p>Total Price: {this.state.totalPrice.toFixed(2)}$</p></strong>
                 
                 <Button hide={this.state.continued} clicked={this.checkoutCancelled} btnType='Danger'>Cancel</Button>
                 <Button hide={this.state.continued} clicked={this.checkoutContinued} btnType='Success'>Continue</Button>
