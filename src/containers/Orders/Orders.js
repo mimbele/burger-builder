@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Order from '../../components/Order/Order'
 import axios from '../../axios'
 import withErrorHandler from '../../hoc/withErrorHandler'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 class Orders extends Component {
     state = {
@@ -37,6 +38,7 @@ class Orders extends Component {
                         ingredients={order.ingredients}
                         price={+order.price} />
                 ))}
+                {this.state.isLoading ? <Spinner /> : null}
             </div>
         );
     }
