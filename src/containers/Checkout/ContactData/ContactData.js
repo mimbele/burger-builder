@@ -8,11 +8,29 @@ import Input from '../../../components/UI/Input/Input'
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+        orderForm: {
+            name: {
+                elementType: 'input',
+                config: {type: 'text', placeholder: 'Your Name'},
+                value: ''
+            },
+            address: {
+                elementType: 'input',
+                config: {type: 'textarea', placeholder: 'Your Address'},
+                value: ''
+            },
+            email: {
+                elementType: 'input',
+                config: {type: 'email', placeholder: 'Your Email'},
+                value: ''
+            },
+            deliveryMethod: {
+                elementType: 'select',
+                config: {
+                    options: [{value: 'fastest', displayValue: 'Fastest'},
+                            {value: 'cheapest', displayValue: 'Cheapest'}]},
+                value: ''
+            },
         },
         ingredients: this.props.ingredients,
         totalPrice: this.props.totalPrice,
@@ -23,16 +41,16 @@ class ContactData extends Component {
         event.preventDefault(); // prevent the form to send a request and reload the page
         this.setState({isLoading: true})
 
+        const formData = {}
+        for (let elementName in this.state.orderForm) {
+            formData[elementName] = this.state.orderForm[elementName].value
+        }
+        
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
-            customer: { //customer data will later be connected to the form data
-                name: 'Maryam Naderi',
-                address: 'blah blah blah',
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'}
-        
+            contactData: formData
+        }
         
         axios.post('/orders.json', order)
             .then(response => {
@@ -46,16 +64,36 @@ class ContactData extends Component {
             })
     }
 
+    changeInput = (event, id) => {
+        const updatedForm = { ...this.state.orderForm }
+        const updatedElement = { ...updatedForm[id] }
+        updatedElement.value = event.target.value
+        updatedForm[id] = updatedElement
+
+        this.setState({orderForm: updatedForm})
+    }
+
     render(){
+        const formElements = []
+        for (let elementName in this.state.orderForm) {
+            formElements.push({
+                id: elementName,
+                data: this.state.orderForm[elementName]
+            })
+        }
+
         let form = (
-            <form>
-                    <Input elementtype='input' type='text' name='name' placeholder='Your Name: ' />
-                    <Input elementtype='input' type='email' name='email' placeholder='Your Email: ' />
-                    <p style={{textAlign: 'left'}}>Address:</p>
-                    <Input elementtype='input' type='text' name='street' placeholder='Street: ' />
-                    <Input elementtype='input' type='text' name='postal' placeholder='Postal Code: ' />
-                    <Button clicked={this.order} btnType='Success'>Order</Button>
-                    {this.state.isLoading ? <Spinner /> : null}
+            <form onSubmit={this.order}>
+                    {formElements.map( element => (
+                        <Input 
+                            key={element.id}
+                            label={element.id}
+                            elementType={element.data.elementType}
+                            config={element.data.config}
+                            value={element.data.value}
+                            changed={(event) => this.changeInput(event, element.id)} />
+                    ))}
+                    <Button btnType='Success'>Order</Button>
                 </form>);
         if (this.state.isLoading) {form = <Spinner />} 
 
