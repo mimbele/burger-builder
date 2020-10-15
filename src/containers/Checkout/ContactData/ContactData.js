@@ -12,26 +12,38 @@ class ContactData extends Component {
             name: {
                 elementType: 'input',
                 config: {type: 'text', placeholder: 'Your Name'},
-                value: ''
+                value: '',
+                validationRules: { required:true, minLength:4 },
+                isValid: false,
+                hasBeenTouched: false
             },
             address: {
                 elementType: 'input',
                 config: {type: 'textarea', placeholder: 'Your Address'},
-                value: ''
+                value: '',
+                validationRules: { required:true, minLength:10 },
+                isValid: false,
+                hasBeenTouched: false
             },
             email: {
                 elementType: 'input',
                 config: {type: 'email', placeholder: 'Your Email'},
-                value: ''
+                value: '',
+                validationRules: { required:true },
+                isValid: false,
+                hasBeenTouched: false
             },
             deliveryMethod: {
                 elementType: 'select',
                 config: {
                     options: [{value: 'fastest', displayValue: 'Fastest'},
                             {value: 'cheapest', displayValue: 'Cheapest'}]},
-                value: ''
+                value: 'fastest',
+                validationRules: {},
+                isValid: true
             },
         },
+        isFormValid: false,
         ingredients: this.props.ingredients,
         totalPrice: this.props.totalPrice,
         isLoading: false
@@ -68,9 +80,23 @@ class ContactData extends Component {
         const updatedForm = { ...this.state.orderForm }
         const updatedElement = { ...updatedForm[id] }
         updatedElement.value = event.target.value
+        updatedElement.isValid = this.validate(updatedElement.value, updatedElement.validationRules)
+        updatedElement.hasBeenTouched = true
         updatedForm[id] = updatedElement
 
-        this.setState({orderForm: updatedForm})
+        let isFormValid = true
+        for (let elementName in updatedForm) {
+            isFormValid = isFormValid && updatedForm[elementName].isValid
+        }
+
+        this.setState({orderForm: updatedForm, isFormValid: isFormValid})
+    }
+
+    validate(value, rules) {
+        let isValid = true
+        if (rules.required) { isValid = (value.trim() !== '') && isValid }
+        if (rules.minLength) { isValid = (value.length >= rules.minLength) && isValid }
+        return isValid
     }
 
     render(){
@@ -91,9 +117,10 @@ class ContactData extends Component {
                             elementType={element.data.elementType}
                             config={element.data.config}
                             value={element.data.value}
+                            invalid={!element.data.isValid && element.data.hasBeenTouched}
                             changed={(event) => this.changeInput(event, element.id)} />
                     ))}
-                    <Button btnType='Success'>Order</Button>
+                    <Button btnType='Success' disabled={!this.state.isFormValid}>Order</Button>
                 </form>);
         if (this.state.isLoading) {form = <Spinner />} 
 

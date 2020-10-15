@@ -6,6 +6,7 @@ const button = (props) => {
     const btnDisplay = props.hide ? 'none' : 'inline-block'
     return(
         <button
+            disabled={props.disabled}
             style={{display: btnDisplay}}
             className={[styles.Button, styles[props.btnType]].join(' ')}
             onClick={props.clicked}> {props.children} </button>
