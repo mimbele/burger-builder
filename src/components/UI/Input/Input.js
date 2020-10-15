@@ -3,10 +3,12 @@ import styles from './Input.module.css'
 
 const input = (props) => {
     let inputElement = null
+    let errorMessage = ''
 
     const inputStyles = [styles.InputElement]
     if (props.invalid) {
         inputStyles.push(styles.Invalid)
+        errorMessage = props.validationErrorMessage
     }
 
     switch (props.elementType) {
@@ -31,12 +33,13 @@ const input = (props) => {
         default:
             inputElement = <input className={inputStyles.join(' ')} 
                 {...props.config} value={props.value} onChange={props.changed} />
-
     }
+
     return (
         <div className={styles.Input} >
             <p className={styles.Label}> {props.label} </p>
             {inputElement}
+            <p className={styles.Error}>{errorMessage}</p>
         </div>
     );
 }

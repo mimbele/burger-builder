@@ -14,6 +14,7 @@ class ContactData extends Component {
                 config: {type: 'text', placeholder: 'Your Name'},
                 value: '',
                 validationRules: { required:true, minLength:4 },
+                validationErrorMessage: 'Name should be at least 4 characters long',
                 isValid: false,
                 hasBeenTouched: false
             },
@@ -22,6 +23,7 @@ class ContactData extends Component {
                 config: {type: 'textarea', placeholder: 'Your Address'},
                 value: '',
                 validationRules: { required:true, minLength:10 },
+                validationErrorMessage: 'Address should be at least 10 characters long',
                 isValid: false,
                 hasBeenTouched: false
             },
@@ -30,6 +32,7 @@ class ContactData extends Component {
                 config: {type: 'email', placeholder: 'Your Email'},
                 value: '',
                 validationRules: { required:true },
+                validationErrorMessage: 'Please enter a valid email address. eg: example@example.com',
                 isValid: false,
                 hasBeenTouched: false
             },
@@ -40,6 +43,7 @@ class ContactData extends Component {
                             {value: 'cheapest', displayValue: 'Cheapest'}]},
                 value: 'fastest',
                 validationRules: {},
+                validationErrorMessage: '',
                 isValid: true
             },
         },
@@ -118,6 +122,7 @@ class ContactData extends Component {
                             config={element.data.config}
                             value={element.data.value}
                             invalid={!element.data.isValid && element.data.hasBeenTouched}
+                            validationErrorMessage={element.data.validationErrorMessage}
                             changed={(event) => this.changeInput(event, element.id)} />
                     ))}
                     <Button btnType='Success' disabled={!this.state.isFormValid}>Order</Button>

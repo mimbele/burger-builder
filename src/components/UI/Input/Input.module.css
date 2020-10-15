@@ -28,3 +28,10 @@
     border: 1px solid red;
     background-color: antiquewhite;
 }
+
+.Error {
+    color: red;
+    margin: 0 0;
+    font-size: small;
+    text-align: left;
+}
