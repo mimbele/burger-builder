@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import * as actions from '../actions/actionTypes'
 
 const DEFAULT_BURGER_PRICE = 4
 
