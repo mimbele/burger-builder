@@ -49,7 +49,8 @@ const reducer = (state = initialState, action) => {
         case actions.SET_INGREDIENTS:
             return {
                 ...state,
-                ingredients: action.ingredients
+                ingredients: action.ingredients,
+                totalPrice: state.defaultBurgerPrice
             }
 
         case actions.FETCH_DATA_ERROR:
