@@ -1,6 +1,6 @@
 import * as actions from '../actions/actionTypes'
 
-initialState = {
+const initialState = {
     orders: [],
     isLoading: false
 }
