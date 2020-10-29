@@ -9,25 +9,16 @@ import Modal from '../../components/UI/Modal/Modal'
 import OrderSummery from '../../components/Burger/OrderSummery/OrderSummery'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler'
-import { addIngredient, removeIngredient } from '../../store/actions/burgerBuilder'
+import { addIngredient, removeIngredient, initIngredients } from '../../store/actions/burgerBuilder'
 
 class BurgerBuilder extends Component {
     state = {
         isOrdering: false, //isOrdering bacomes true when Order button is pressed and triggers orderHandler
         isLoading: false, //isLoading bacomes true while order is being sent to the server and triggers showing the loading Spinner
-        loadingDataError: false //loadingDataError becomes true when data can't be retrieved from the server at componentDidMount and therefore BurgerBuilder app is essentially broken
     }
 
     componentDidMount () {
-        // this will later be re adjusted
-
-        // axios.get( '/ingredients.json' )
-        //     .then( response => {
-        //         this.setState( { ingredients: response.data } );
-        //     })
-        //     .catch( error => {
-        //         this.setState( { loadingDataError: true } );
-        //     });
+        this.props.initIngredients()
     }
 
     orderHandler = () => {
@@ -51,7 +42,7 @@ class BurgerBuilder extends Component {
         const disableOrderButton = (this.props.totalPrice === this.props.defaultBurgerPrice);
 
         let orderSummery = null;
-        let burger = this.state.loadingDataError ? <p>Data can't be loaded! :/</p> : <Spinner />;
+        let burger = this.props.fetchDataError ? <p>Data can't be loaded! :/</p> : <Spinner />;
 
         if (this.props.ingredients) {
             burger = (<Aux>
@@ -91,14 +82,16 @@ const mapStateToProps = state => {
     return {
         ingredients : state.ingredients,
         totalPrice : state.totalPrice,
-        defaultBurgerPrice : state.defaultBurgerPrice
+        defaultBurgerPrice : state.defaultBurgerPrice,
+        fetchDataError : state.fetchDataError
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         moreIngredient : (igName) => dispatch(addIngredient(igName)),
-        lessIngredient : (igName) => dispatch(removeIngredient(igName) )
+        lessIngredient : (igName) => dispatch(removeIngredient(igName)),
+        initIngredients: () => dispatch(initIngredients())
     }
 }
 

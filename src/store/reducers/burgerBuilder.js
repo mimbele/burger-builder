@@ -10,9 +10,10 @@ const INGREDIENT_PRICES = {
 }
 
 const initialState = {
-    ingredients: {salad:0, meat:0, bacon:0, cheese:0 },
+    ingredients: null,
     totalPrice: DEFAULT_BURGER_PRICE,
-    defaultBurgerPrice: DEFAULT_BURGER_PRICE
+    defaultBurgerPrice: DEFAULT_BURGER_PRICE,
+    fetchDataError: false
 }
 
 const updatePrice = (currentPrice, amount) => {
@@ -43,6 +44,18 @@ const reducer = (state = initialState, action) => {
                     },
                     totalPrice: updatePrice(state.totalPrice ,-INGREDIENT_PRICES[action.ingredientName])
                 }
+            }
+
+        case actions.SET_INGREDIENTS:
+            return {
+                ...state,
+                ingredients: action.ingredients
+            }
+
+        case actions.FETCH_DATA_ERROR:
+            return {
+                ...state,
+                fetchDataError: true
             }
 
         default:
