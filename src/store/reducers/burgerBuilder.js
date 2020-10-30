@@ -20,31 +20,36 @@ const updatePrice = (currentPrice, amount) => {
     return currentPrice + amount
 }
 
+const addIngredient = (state, action) => ({
+    ...state,
+    ingredients: { ...state.ingredients,
+        [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+    },
+    totalPrice: updatePrice(state.totalPrice ,INGREDIENT_PRICES[action.ingredientName])
+})
+
+const removeIngredient = (state, action) => {
+    let oldCount = state.ingredients[action.ingredientName]
+    if (oldCount <= 0) {
+        return state;
+    }
+    else {
+        return {
+            ...state,
+            ingredients: { ...state.ingredients,
+            [action.ingredientName]: state.ingredients[action.ingredientName] - 1},
+            totalPrice: updatePrice(state.totalPrice ,-INGREDIENT_PRICES[action.ingredientName])
+        }
+    }
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.ADD_INGREDIENT:
-            return {
-                ...state,
-                ingredients: { ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-                },
-                totalPrice: updatePrice(state.totalPrice ,INGREDIENT_PRICES[action.ingredientName])
-            }
+            return addIngredient(state, action)
 
         case actions.REMOVE_INGREDIENT:
-            let oldCount = state.ingredients[action.ingredientName]
-            if (oldCount <= 0) {
-                return state;
-            }
-            else {
-                return {
-                    ...state,
-                    ingredients: { ...state.ingredients,
-                        [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-                    },
-                    totalPrice: updatePrice(state.totalPrice ,-INGREDIENT_PRICES[action.ingredientName])
-                }
-            }
+            return removeIngredient(state, action)
 
         case actions.SET_INGREDIENTS:
             return {
@@ -54,10 +59,7 @@ const reducer = (state = initialState, action) => {
             }
 
         case actions.FETCH_DATA_ERROR:
-            return {
-                ...state,
-                fetchDataError: true
-            }
+            return {...state, fetchDataError: true}
 
         default:
             return state
