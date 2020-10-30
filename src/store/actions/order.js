@@ -9,6 +9,8 @@ const purchaseBurgerFail = (error) => ({
     type: actions.PURCHASE_BURGER_FAIL, error: error
 })
 
+export const startNewOrder = () => ({ type: actions.START_NEW_ORDER })
+
 const startPurchase = () => ({ type: actions.START_PURCHASE })
 
 export const purchaseBurger = (orderData) => {

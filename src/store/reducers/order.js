@@ -4,13 +4,15 @@ const initialState = {
     orders: [],
     isLoading: false,
     purchasedSuccessfully: false,
-
 }
 
 const reducer = (state= initialState, action) =>{
     switch(action.type) {
+        case actions.START_NEW_ORDER:
+            return {...state, purchasedSuccessfully: false}
+
         case actions.START_PURCHASE:
-            return {...state, isLoading: true, purchasedSuccessfully: false}
+            return {...state, isLoading: true}
 
         case actions.PURCHASE_BURGER_SUCCESS:
             const newOrder = { ...action.orderData, id: action.orderID }

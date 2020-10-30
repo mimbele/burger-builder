@@ -5,6 +5,7 @@ import styles from './Checkout.module.css'
 import Burger from '../../components/Burger/Burger'
 import Button from '../../components/UI/Button/Button'
 import ContactData from './ContactData/ContactData';
+import { startNewOrder } from '../../store/actions/order'
 
 
 class Checkout extends Component {
@@ -18,6 +19,7 @@ class Checkout extends Component {
 
     checkoutContinued = () => {
         this.setState({continued: true})
+        this.props.startNewOrder()
         this.props.history.replace('/checkout/contact-data')
     }
 
@@ -68,4 +70,8 @@ const mapStateToProps = state => ({
     totalPrice: state.burger.totalPrice
 })
 
-export default connect(mapStateToProps)(Checkout);
+const mapDispatchToProps = dispatch => ({
+    startNewOrder: () => dispatch(startNewOrder())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
