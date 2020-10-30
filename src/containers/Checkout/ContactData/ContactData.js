@@ -7,6 +7,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../../hoc/withErrorHandler'
 import Input from '../../../components/UI/Input/Input'
 import { purchaseBurger } from '../../../store/actions/order'
+import Modal from '../../../components/UI/Modal/Modal'
 
 class ContactData extends Component {
     state = {
@@ -54,13 +55,10 @@ class ContactData extends Component {
 
     order = (event) => {
         event.preventDefault(); // prevent the form to send a request and reload the page
-        this.setState({isLoading: true})
-
         const formData = {}
         for (let elementName in this.state.orderForm) {
             formData[elementName] = this.state.orderForm[elementName].value
         }
-
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
@@ -93,6 +91,14 @@ class ContactData extends Component {
         return isValid
     }
 
+    goToHomePage = () => {
+        this.props.history.push('/')
+    }
+
+    goToOrdersPage = () => {
+        this.props.history.push('/orders')
+    }
+
     render(){
         const formElements = []
         for (let elementName in this.state.orderForm) {
@@ -123,6 +129,11 @@ class ContactData extends Component {
             <div className={styles.ContactData}>
                 <h4>Please Enter Your Contact Information</h4>
                 {form}
+                <Modal show={this.props.showSuccessModal}>
+                    <h3>Your Order Has Been Successfully Submitted!</h3>
+                    <Button clicked={this.goToOrdersPage} btnType='Success'>Review All Orders</Button>
+                    <Button clicked={this.goToHomePage} btnType='Success'>Go To Home Page</Button>
+                </Modal>
             </div>
         );
     }
@@ -131,7 +142,8 @@ class ContactData extends Component {
 const mapStateToProps = state => ({
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
-    isLoading: state.orders.isLoading
+    isLoading: state.orders.isLoading,
+    showSuccessModal: state.orders.purchasedSuccessfully
 })
 
 const mapDispatchToProps = (dispatch) => ({
