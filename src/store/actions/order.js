@@ -16,11 +16,36 @@ export const purchaseBurger = (orderData) => {
         dispatch(startPurchase())
         axios.post('/orders.json', orderData)
             .then(response => {
-                console.log(response)
                 dispatch(purchaseBugerSuccess(response.data.name, orderData))
             })
             .catch(error => {
                 dispatch(purchaseBurgerFail(error))
+            })
+    }
+}
+
+const fetchOrdersSuccess = (orders) => ({type: actions.FETCH_ORDERS_SUCCESS, orders: orders})
+
+const fetchOrdersFail = () => ({type: actions.FETCH_ORDERS_FAIL})
+
+const startFetching = () => ({type: actions.START_FETCH})
+
+export const fetchOrders = () => {
+    return (dispatch) => {
+        dispatch(startFetching())
+        axios.get('/orders.json')
+            .then(response => {
+                const orders = []
+                for (let orderKey in response.data){
+                    orders.push({
+                        ...response.data[orderKey],
+                        id: orderKey
+                    })
+                }
+                dispatch(fetchOrdersSuccess(orders))
+            })
+            .catch(error => {
+                dispatch(fetchOrdersFail())
             })
     }
 }
