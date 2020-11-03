@@ -13,3 +13,8 @@ export const PURCHASE_BURGER_FAIL = 'PURCHASE_BURGER_FAIL'
 export const START_FETCH = 'START_FETCH'
 export const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS'
 export const FETCH_ORDERS_FAIL = 'FETCH_ORDERS_FAIL'
+
+//authentication
+export const START_AUTH = 'START_AUTH'
+export const AUTH_SUCCESS = 'AUTH_SUCCESS'
+export const AUTH_FAIL = 'AUTH_FAIL'

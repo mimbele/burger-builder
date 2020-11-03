@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
+import axios from '../../axios'
+import { connect } from 'react-redux'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 import styles from './Authentication.module.css'
+import { authenticate } from '../../store/actions/auth'
+import withErrorHandler from '../../hoc/withErrorHandler'
 
 class Authentication extends Component {
     state = {
@@ -35,7 +39,10 @@ class Authentication extends Component {
         return isValid
     }
 
-    authenticate = () => {}
+    authenticate = (event) => {
+        event.preventDefault()
+        this.props.authenticate(this.state.authForm.email.value, this.state.authForm.password.value)
+    }
 
     changeInput = (event, elementID) => {
         const updatedForm = { ...this.state.authForm }
@@ -62,30 +69,40 @@ class Authentication extends Component {
             })
         }
 
+        const formElementsJSX = formElements.map( element => (
+                <Input 
+                    key={element.id}
+                    label={element.id}
+                    elementType={element.data.elementType}
+                    config={element.data.config}
+                    value={element.data.value}
+                    invalid={!element.data.isValid && element.data.hasBeenTouched}
+                    validationErrorMessage={element.data.validationErrorMessage}
+                    changed={(event) => this.changeInput(event, element.id)} />
+            ))
 
         let form = (
             <form onSubmit={this.authenticate}>
-                    {formElements.map( element => (
-                        <Input 
-                            key={element.id}
-                            label={element.id}
-                            elementType={element.data.elementType}
-                            config={element.data.config}
-                            value={element.data.value}
-                            invalid={!element.data.isValid && element.data.hasBeenTouched}
-                            validationErrorMessage={element.data.validationErrorMessage}
-                            changed={(event) => this.changeInput(event, element.id)} />
-                    ))}
+                    {formElementsJSX}
+                <Button btnType='Success' disabled={!this.state.isFormValid}>Submit</Button>
                 </form>);
 
         return (
             <div className={styles.Authentication}>
                 <h4>Please Enter Your Account Information</h4>
                 {form}
-                <Button btnType='Success' disabled={!this.state.isFormValid}>Submit</Button>
             </div>
         )
     }
 }
 
-export default Authentication
+const mapStateToProps = (state) => ({
+    isLoading: state.isLoading,
+    isAuthenticated: state.isAuthenticated
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    authenticate : (email, password) => dispatch(authenticate(email, password))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Authentication, axios))
