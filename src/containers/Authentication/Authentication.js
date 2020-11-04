@@ -6,6 +6,7 @@ import Button from '../../components/UI/Button/Button'
 import styles from './Authentication.module.css'
 import { authenticate } from '../../store/actions/auth'
 import withErrorHandler from '../../hoc/withErrorHandler'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 class Authentication extends Component {
     state = {
@@ -93,15 +94,25 @@ class Authentication extends Component {
                     {formElementsJSX}
                 <Button btnType='Success' disabled={!this.state.isFormValid}>Submit</Button>
                 </form>);
+        if (this.props.isLoading) {
+            form = <Spinner />
+        }
 
         const formTitle = this.state.isSignUp ? 'Sign Up' : 'Sign In'
         const toggleBtnTitle = this.state.isSignUp ? 'Sign In' : 'Sign Up'
         const toggleBtnMessage = this.state.isSignUp ? 'already have an account? ' : 'don\'t have an account? '
+
+        let errorMessage = null
+        if (this.props.error) {
+            errorMessage = <p className={styles.Error}>{this.props.error.message}</p>
+        }
+
         return (
             <div className={styles.Authentication}>
                 <h4>Please Enter Your Account Information to</h4>
                 <h3>{formTitle}</h3>
                 {form}
+                {errorMessage}
                 <br />
                 {toggleBtnMessage}<Button btnType='Danger' clicked={this.toggleAuthMode}>{toggleBtnTitle}</Button>
             </div>
@@ -110,8 +121,8 @@ class Authentication extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isLoading: state.isLoading,
-    isAuthenticated: state.isAuthenticated
+    isLoading: state.auth.isLoading,
+    error: state.auth.error
 })
 
 const mapDispatchToProps = (dispatch) => ({

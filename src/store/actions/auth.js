@@ -5,7 +5,7 @@ const startAuth = () => ({ type:actions.START_AUTH })
 
 const authSuccess = (idToken, userId) => ({ type:actions.AUTH_SUCCESS, userId:userId, token:idToken })
 
-const authFail = () => ({ type:actions.AUTH_FAIL})
+const authFail = (error) => ({ type:actions.AUTH_FAIL, error:error})
 
 export const authenticate = (email, password, isSignUp) => {
     return (dispatch) => {
@@ -24,8 +24,8 @@ export const authenticate = (email, password, isSignUp) => {
                 dispatch(authSuccess(response.data.idToken, response.data.localId))
             })
             .catch( error => {
-                console.log(error)
-                dispatch(authFail())
+                console.log(error.response)
+                dispatch(authFail(error.response.data.error))
             })
     }
 }

@@ -19,3 +19,10 @@
         width: 500px;
     }
 }
+
+.Error {
+    color: red;
+    margin: 0 0;
+    font-size: small;
+    text-align: left;
+}
