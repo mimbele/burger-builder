@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const startAuth = () => ({ type:actions.START_AUTH })
 
-const authSuccess = (authData) => ({ type:actions.AUTH_SUCCESS, authData: authData })
+const authSuccess = (idToken, userId) => ({ type:actions.AUTH_SUCCESS, userId:userId, token:idToken })
 
 const authFail = () => ({ type:actions.AUTH_FAIL})
 
@@ -21,8 +21,7 @@ export const authenticate = (email, password, isSignUp) => {
         }
         axios.post(url, payload)
             .then( response => {
-                console.log(response)
-                dispatch(authSuccess(response.data))
+                dispatch(authSuccess(response.data.idToken, response.data.localId))
             })
             .catch( error => {
                 console.log(error)

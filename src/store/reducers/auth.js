@@ -2,19 +2,25 @@ import * as actions from '../actions/actionTypes'
 
 const initialState = {
     isLoading: false,
-    isAuthenticated: false
+    error: null,
+    token: null,
+    userId: null
 }
 
 const reducer = (state=initialState, action) => {
     switch (action.type) {
         case actions.START_AUTH:
-            return {...state, isLoading:true }
+            return {...state, isLoading:true, error:null }
 
         case actions.AUTH_SUCCESS:
-            return
+            return {...state, token:action.token, userId:action.userId, isLoading:false, error:null}
+
         case actions.AUTH_FAIL:
-            return
+            return {...state, isLoading:false, error:action.error}
+
         default:
             return state
     }
 }
+
+export default reducer
