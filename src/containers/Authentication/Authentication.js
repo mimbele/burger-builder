@@ -29,7 +29,8 @@ class Authentication extends Component {
                 hasBeenTouched: false
             }
         },
-        isFormValid: false
+        isFormValid: false,
+        isSignUp: true // so that this page can toggle between sign-in and sign-up
     }
 
     validate(value, rules) {
@@ -41,7 +42,7 @@ class Authentication extends Component {
 
     authenticate = (event) => {
         event.preventDefault()
-        this.props.authenticate(this.state.authForm.email.value, this.state.authForm.password.value)
+        this.props.authenticate(this.state.authForm.email.value, this.state.authForm.password.value, this.state.isSignUp)
     }
 
     changeInput = (event, elementID) => {
@@ -58,6 +59,12 @@ class Authentication extends Component {
         }
 
         this.setState({authForm: updatedForm, isFormValid: isFormValid})
+    }
+
+    toggleAuthMode = () => {
+        this.setState( oldState => ({
+            isSignUp: !oldState.isSignUp
+        }))
     }
 
     render () {
@@ -87,10 +94,16 @@ class Authentication extends Component {
                 <Button btnType='Success' disabled={!this.state.isFormValid}>Submit</Button>
                 </form>);
 
+        const formTitle = this.state.isSignUp ? 'Sign Up' : 'Sign In'
+        const toggleBtnTitle = this.state.isSignUp ? 'Sign In' : 'Sign Up'
+        const toggleBtnMessage = this.state.isSignUp ? 'already have an account? ' : 'don\'t have an account? '
         return (
             <div className={styles.Authentication}>
-                <h4>Please Enter Your Account Information</h4>
+                <h4>Please Enter Your Account Information to</h4>
+                <h3>{formTitle}</h3>
                 {form}
+                <br />
+                {toggleBtnMessage}<Button btnType='Danger' clicked={this.toggleAuthMode}>{toggleBtnTitle}</Button>
             </div>
         )
     }
@@ -102,7 +115,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    authenticate : (email, password) => dispatch(authenticate(email, password))
+    authenticate : (email, password, isSignUp) => dispatch(authenticate(email, password, isSignUp))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Authentication, axios))
