@@ -109,6 +109,9 @@ class Authentication extends Component {
             errorMessage = <p className={styles.Error}>{this.props.error.message}</p>
         }
 
+        const redirect = this.props.isAuthenticated ? 
+            ( this.props.burgerIsBeingBuilt ? <Redirect to='/checkout'/> : <Redirect to='/burger-builder'/>) : null
+
         return (
             <div className={styles.Authentication}>
                 <h4>Please Enter Your Account Information To {formTitle}</h4>
@@ -116,7 +119,7 @@ class Authentication extends Component {
                 {errorMessage}
                 <br />
                 {toggleBtnMessage}<Button btnType='Danger' clicked={this.toggleAuthMode}>{toggleBtnTitle}</Button>
-                {this.props.isAuthenticated ? <Redirect to='/'/> : null}
+                {redirect}
             </div>
         )
     }
@@ -125,7 +128,8 @@ class Authentication extends Component {
 const mapStateToProps = (state) => ({
     isLoading: state.auth.isLoading,
     error: state.auth.error,
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    burgerIsBeingBuilt: state.burger.ingredients !== null
 })
 
 const mapDispatchToProps = (dispatch) => ({
