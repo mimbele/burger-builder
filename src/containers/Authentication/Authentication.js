@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../axios'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 import styles from './Authentication.module.css'
@@ -69,6 +70,10 @@ class Authentication extends Component {
     }
 
     render () {
+        const formTitle = this.state.isSignUp ? 'Sign Up' : 'Sign In'
+        const toggleBtnTitle = this.state.isSignUp ? 'Sign In' : 'Sign Up'
+        const toggleBtnMessage = this.state.isSignUp ? 'already have an account? ' : 'don\'t have an account? '
+
         const formElements = []
         for (let elementName in this.state.authForm) {
             formElements.push({
@@ -92,15 +97,12 @@ class Authentication extends Component {
         let form = (
             <form onSubmit={this.authenticate}>
                     {formElementsJSX}
-                <Button btnType='Success' disabled={!this.state.isFormValid}>Submit</Button>
+                <Button btnType='Success' disabled={!this.state.isFormValid}>{formTitle}</Button>
                 </form>);
         if (this.props.isLoading) {
             form = <Spinner />
         }
 
-        const formTitle = this.state.isSignUp ? 'Sign Up' : 'Sign In'
-        const toggleBtnTitle = this.state.isSignUp ? 'Sign In' : 'Sign Up'
-        const toggleBtnMessage = this.state.isSignUp ? 'already have an account? ' : 'don\'t have an account? '
 
         let errorMessage = null
         if (this.props.error) {
@@ -115,6 +117,7 @@ class Authentication extends Component {
                 {errorMessage}
                 <br />
                 {toggleBtnMessage}<Button btnType='Danger' clicked={this.toggleAuthMode}>{toggleBtnTitle}</Button>
+                {this.props.isAuthenticated ? <Redirect to='/'/> : null}
             </div>
         )
     }
@@ -122,7 +125,8 @@ class Authentication extends Component {
 
 const mapStateToProps = (state) => ({
     isLoading: state.auth.isLoading,
-    error: state.auth.error
+    error: state.auth.error,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 const mapDispatchToProps = (dispatch) => ({

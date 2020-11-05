@@ -7,7 +7,7 @@ import { logout } from '../../store/actions/auth'
 
 class Profile extends Component {
 
-    state = { logout: false}
+    state = { logout: false }
 
     logout = () => {
         this.setState({logout:true})
