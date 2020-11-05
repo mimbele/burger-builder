@@ -13,7 +13,7 @@ const tokenTimeout = (expirationTime) => {
     }
 }
 
-const logOut = () => ({ type:actions.LOG_OUT })
+export const logOut = () => ({ type:actions.LOG_OUT })
 
 export const authenticate = (email, password, isSignUp) => {
     return (dispatch) => {
