@@ -15,7 +15,6 @@ class Profile extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <div className={styles.Profile}>
                 <h4>This is Your Profile</h4>
