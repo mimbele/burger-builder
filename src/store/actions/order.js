@@ -13,10 +13,10 @@ export const startNewOrder = () => ({ type: actions.START_NEW_ORDER })
 
 const startPurchase = () => ({ type: actions.START_PURCHASE })
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
     return (dispatch) => {
         dispatch(startPurchase())
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth=' + token, orderData)
             .then(response => {
                 dispatch(purchaseBugerSuccess(response.data.name, orderData))
             })
@@ -32,10 +32,10 @@ const fetchOrdersFail = () => ({type: actions.FETCH_ORDERS_FAIL})
 
 const startFetching = () => ({type: actions.START_FETCH})
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return (dispatch) => {
         dispatch(startFetching())
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
             .then(response => {
                 const orders = []
                 for (let orderKey in response.data){

@@ -65,7 +65,7 @@ class ContactData extends Component {
             contactData: formData
         }
 
-        this.props.purchaseBurger(order)
+        this.props.purchaseBurger(order, this.props.authToken)
     }
 
     changeInput = (event, id) => {
@@ -143,11 +143,12 @@ const mapStateToProps = state => ({
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
     isLoading: state.orders.isLoading,
-    showSuccessModal: state.orders.purchasedSuccessfully
+    showSuccessModal: state.orders.purchasedSuccessfully,
+    authToken: state.auth.token
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    purchaseBurger: (orderData) => dispatch(purchaseBurger(orderData))
+    purchaseBurger: (orderData, token) => dispatch(purchaseBurger(orderData, token))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios))
