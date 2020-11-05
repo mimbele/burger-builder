@@ -111,8 +111,7 @@ class Authentication extends Component {
 
         return (
             <div className={styles.Authentication}>
-                <h4>Please Enter Your Account Information to</h4>
-                <h3>{formTitle}</h3>
+                <h4>Please Enter Your Account Information To {formTitle}</h4>
                 {form}
                 {errorMessage}
                 <br />
