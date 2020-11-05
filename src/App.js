@@ -17,25 +17,43 @@ class App extends Component {
   }
   
   render(){
+    let routes = (
+      <Switch>
+        <Route path='/burger-builder' component={BurgerBuilder}/>
+        <Route path='/authentication' component={Authentication}/>
+        <Redirect from='/' to='/burger-builder'/>
+        <Redirect to='/' /> {/* for any unknown routes */}
+      </Switch>)
+
+    if (this.props.isAuthenticated) {
+      routes = (
+        <Switch>
+          <Route path='/burger-builder' component={BurgerBuilder}/>
+          <Route path='/checkout' component={Checkout}/>
+          <Route path='/orders' component={Orders}/>
+          <Route path='/profile' component={Profile}/>
+          <Redirect from='/' to='/burger-builder'/>
+          <Redirect to='/' /> {/* for any unknown routes */}
+        </Switch>
+      )
+    }
+
     return (
       <div>
         <Layout>
-          <Switch>
-            <Route path='/burger-builder' component={BurgerBuilder}/>
-            <Route path='/checkout' component={Checkout}/>
-            <Route path='/orders' component={Orders}/>
-            <Route path='/authentication' component={Authentication}/>
-            <Route path='/profile' component={Profile}/>
-            <Redirect from='/' to='/burger-builder'/>
-          </Switch>
+          {routes}
         </Layout>
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
 const mapDispatchToProps = (dispatch) => ({
   autoSignIn : () => dispatch(autoCheckAuth())
 })
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
