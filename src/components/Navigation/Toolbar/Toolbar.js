@@ -8,7 +8,7 @@ const toolbar = (props) => (
     <header className={styles.Toolbar}>
         <MenuIcon clicked={props.clickMenu} mobileOnly/>
         <Logo desktopOnly/>
-        <NavigationItems desktopOnly/>
+        <NavigationItems desktopOnly isAuthenticated={props.auth} />
     </header>
 );
 
