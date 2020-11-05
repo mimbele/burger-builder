@@ -9,11 +9,11 @@ const authFail = (error) => ({ type:actions.AUTH_FAIL, error:error})
 
 const tokenTimeout = (expirationTime) => {
     return (dispatch) => {
-        setTimeout(()=>dispatch(logOut()), expirationTime*1000)
+        setTimeout(()=>dispatch(logout()), expirationTime*1000)
     }
 }
 
-export const logOut = () => ({ type:actions.LOG_OUT })
+export const logout = () => ({ type:actions.AUTH_LOGOUT })
 
 export const authenticate = (email, password, isSignUp) => {
     return (dispatch) => {

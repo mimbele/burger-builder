@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styles from './Profile.module.css'
 import Button from '../../components/UI/Button/Button'
-import { logOut } from '../../store/actions/auth'
+import { logout } from '../../store/actions/auth'
 
 class Profile extends Component {
 
@@ -27,7 +27,7 @@ class Profile extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    logout: () => dispatch(logOut())
+    logout: () => dispatch(logout())
 })
 
 export default connect(null, mapDispatchToProps)(Profile)
