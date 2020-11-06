@@ -111,7 +111,7 @@ class Authentication extends Component {
 
         const redirect = (this.props.isAuthenticated ? 
             (this.props.burgerIsBeingBuilt ? <Redirect to='/checkout'/> : <Redirect to='/burger-builder'/>) : null)
-
+            console.log(redirect)
         return (
             <div className={styles.Authentication}>
                 <h4>Please Enter Your Account Information To {formTitle}</h4>

@@ -22,7 +22,7 @@ class BurgerBuilder extends Component {
     }
 
     orderHandler = () => {
-        if (this.props.isAthenticated) {
+        if (this.props.auth) {
             this.setState({isOrdering: true});
         }
         else {
@@ -90,7 +90,7 @@ const mapStateToProps = state => {
         totalPrice : state.burger.totalPrice,
         defaultBurgerPrice : state.burger.defaultBurgerPrice,
         fetchDataError : state.burger.fetchDataError,
-        auth : state.auth.isAthenticated
+        auth : state.auth.isAuthenticated
     }
 }
 
