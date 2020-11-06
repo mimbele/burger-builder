@@ -59,7 +59,7 @@ class BurgerBuilder extends Component {
                             disableLessButton={disableLessButton}
                             disableOrderButton={disableOrderButton}
                             orderHandler={this.orderHandler}
-                            isAuthenticated={this.props.isAthenticated}/>
+                            isAuthenticated={this.props.auth}/>
                     </Aux>);
 
             orderSummery = (<OrderSummery 
