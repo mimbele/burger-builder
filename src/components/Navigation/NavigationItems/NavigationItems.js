@@ -10,15 +10,15 @@ const navigationItems = (props) => {
 
     return (
         <ul className={classes}>
-            <li>
+            <li onClick={props.clicked}>
                 <NavLink 
                     to='/burger-builder' exact
                     activeClassName={styles.active} >Burger Builder</NavLink>
             </li>
-            <li>
+            <li onClick={props.clicked}>
                 {props.isAuthenticated ? ordersNavItem : null}
             </li>
-            <li>
+            <li onClick={props.clicked}>
                 {props.isAuthenticated ? ProfileNavItem : authenticationNavItem}
             </li>
         </ul>
