@@ -1,26 +1,38 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Route, Redirect, Switch } from  'react-router-dom';
 import { connect } from 'react-redux'
 
 import Layout from './containers/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
-import Checkout from './containers/Checkout/Checkout'
-import Orders from './containers/Orders/Orders'
-import Authentication from './containers/Authentication/Authentication'
-import Profile from './containers/Profile/Profile'
 import { autoCheckAuth } from './store/actions/auth'
+import Spinner from './components/UI/Spinner/Spinner'
+
+const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'))
+const Authentication = React.lazy(() => import('./containers/Authentication/Authentication'))
+const Profile = React.lazy(() => import('./containers/Profile/Profile'))
+const Orders = React.lazy(() => import('./containers/Orders/Orders'))
 
 class App extends Component {
 
   componentDidMount = () => {
     this.props.autoSignIn() //to stay logged-in whenever we reload any page and we have a valid token
   }
+
+  withSuspense = (component) => {
+    return (
+      () => (
+        <Suspense fallback={<Spinner />}>
+          {component}
+        </Suspense>
+      )
+    )
+  }
   
   render(){
     let routes = (
       <Switch>
         <Route path='/burger-builder' component={BurgerBuilder}/>
-        <Route path='/authentication' component={Authentication}/>
+        <Route path='/authentication' render={this.withSuspense(<Authentication/>)}/>
         <Redirect from='/' to='/burger-builder'/>
         <Redirect to='/' /> {/* for any unknown routes */}
       </Switch>)
@@ -29,9 +41,9 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path='/burger-builder' component={BurgerBuilder}/>
-          <Route path='/checkout' component={Checkout}/>
-          <Route path='/orders' component={Orders}/>
-          <Route path='/profile' component={Profile}/>
+          <Route path='/checkout' render={this.withSuspense(<Checkout/>)}/>
+          <Route path='/orders' render={this.withSuspense(<Orders/>)}/>
+          <Route path='/profile' render={this.withSuspense(<Profile/>)}/>
           <Redirect from='/' to='/burger-builder'/>
           <Redirect to='/' /> {/* for any unknown routes */}
         </Switch>
