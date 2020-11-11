@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styles from './Checkout.module.css'
 import Burger from '../../components/Burger/Burger'
@@ -74,4 +74,4 @@ const mapDispatchToProps = dispatch => ({
     startNewOrder: () => dispatch(startNewOrder())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Checkout))
